@@ -1,0 +1,120 @@
+.input-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-icon > img {
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    pointer-events: none; 
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.input-icon input {
+    width: 100%;
+    padding: 12px 44px; 
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-icon input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.input-icon:focus-within > img {
+    opacity: 1;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px; 
+    background: none;
+    border: none;
+    padding: 8px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.toggle-password:focus,
+.toggle-password:focus-visible {
+    outline: none;
+}
+
+.toggle-password img {
+    position: static;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.toggle-password:hover img,
+.toggle-password.active img {
+    opacity: 1;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    margin-top: 0.5rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.btn-primary:active {
+    transform: scale(0.97); 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2) inset;
+}
+
+.feedback {
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.error {
+    background: #ffebee;
+    color: var(--error);
+    border: 1px solid var(--error);
+}
+
+.success {
+    background: #e8f5e9;
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}

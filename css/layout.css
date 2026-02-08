@@ -1,0 +1,53 @@
+.login-box {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.05);
+
+    animation: cardIn 0.4s ease;
+}
+
+.login-box h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+.login-box p {
+    margin: 0.5rem 0 2rem;
+    font-size: 0.95rem;
+    text-align: center;
+    color: #666;
+}
+
+.login-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.login-avatar img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+.form-group {
+    margin-bottom: 1.4rem;
+}
+
+.security-hint {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    text-align: center;
+    color: #777;
+}
+
+
