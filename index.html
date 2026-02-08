@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Colaborador</title>
+    <title>Portal do Desenvolvedor</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
             </div>
 
             <header>
-                <h1>Acesso ao Portal</h1>
+                <h1>Portal do Desenvolvedor</h1>
                 <p>Insira suas credenciais para continuar</p>
             </header>
 
@@ -25,15 +25,14 @@
                 <div class="form-group">
                     <div class="input-icon">
                         <img src="assets/images/user.png" alt="">
-                        <input type="text" id="username" autocomplete="username" required>
+                        <input type="text" id="username" autocomplete="username" placeholder="Digite seu usuário" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-icon input-password">
                         <img src="assets/images/lock.png" alt="">
-                        
-                        <input type="password" id="password" required>
+                        <input type="password" id="password" placeholder="Digite sua senha" required>
 
                         <button type="button" class="toggle-password" aria-label="Mostrar senha">
                             <img src="assets/images/hide.png" alt="">
@@ -49,18 +48,23 @@
 
                 <button type="submit" class="btn-primary">Entrar</button>
 
-                <p class="security-hint">Seus dados são processados localmente.</p>
-
             </form>
+
+               <p class="security-note">
+                    <img src="assets/images/verified.png" alt="Cadeado" width="18"> 
+                    Credenciais tratadas com segurança
+               </p>
+
         </section>
     </main>
 
     <div id="successOverlay" class="overlay hidden">
         <div class="success-card">
             <div id="statusVisual" class="status-visual">
-                <div class="check-icon"></div> </div>
-            <h2 id="welcomeTitle">Login realizado!</h2>
-            <p id="successStatus">Aguarde, estamos preparando seu painel.</p>
+                </div>
+            <h2 id="welcomeTitle">Título</h2>
+            <p id="successStatus">Mensagem de status.</p>
+            <button type="button" id="closeOverlay" class="btn-primary hidden" style="margin-top: 2rem;">Entendido</button>
         </div>
     </div>
 

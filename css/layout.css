@@ -4,11 +4,11 @@
     border-radius: 12px;
     width: 100%;
     max-width: 400px;
-
+    display: flex;
+    flex-direction: column;
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.05);
-
     animation: cardIn 0.4s ease;
 }
 
@@ -18,7 +18,7 @@
     text-align: center;
 }
 
-.login-box p {
+.login-box > header > p {
     margin: 0.5rem 0 2rem;
     font-size: 0.95rem;
     text-align: center;
@@ -43,17 +43,21 @@
     margin-bottom: 1.4rem;
 }
 
-.security-hint {
-    margin-top: 1rem;
-    font-size: 0.8rem;
-    text-align: center;
-    color: #777;
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.2rem;
 }
 
-.form-options {
+.security-note {
+    margin-top: 2rem; 
+    padding-top: 1.5rem; 
+    border-top: 1px solid var(--border); 
+    width: 100%;
+    font-size: 0.75rem;
+    color: #888;
     display: flex;
     align-items: center;
-    margin-bottom: 1.2rem;
-    font-size: 0.85rem;
-    color: #666;
+    justify-content: center;
+    gap: 8px;
 }

@@ -116,8 +116,8 @@
     text-align: center;
 }
 
-#feedbackMessage {
-    white-space: pre-line; 
+#feedbackMessage, #successStatus {
+    white-space: pre-line;
 }
 
 .error {

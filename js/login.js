@@ -13,17 +13,25 @@ const toggleBtn = document.querySelector('.toggle-password');
 const toggleIcon = toggleBtn?.querySelector('img');
 const forgotPasswordBtn = document.getElementById('forgotPassword');
 const successOverlay = document.getElementById('successOverlay');
-const userAvatar = document.getElementById('userAvatar');
 const welcomeTitle = document.getElementById('welcomeTitle');
-const rememberCheckbox = document.getElementById('rememberMe');
+const successStatus = document.getElementById('successStatus');
 const statusVisual = document.getElementById('statusVisual');
+const closeOverlayBtn = document.getElementById('closeOverlay');
 
-window.addEventListener('load', () => {
-    const savedUser = localStorage.getItem('rememberedUser');
-    if (savedUser) {
-        usernameInput.value = savedUser;
-        if (rememberCheckbox) rememberCheckbox.checked = true;
+function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false) {
+    welcomeTitle.textContent = titulo;
+    successStatus.textContent = mensagem;
+    statusVisual.innerHTML = conteudoVisual;
+    successOverlay.classList.remove('hidden');
+    if (mostrarBotao) {
+        closeOverlayBtn.classList.remove('hidden');
+    } else {
+        closeOverlayBtn.classList.add('hidden');
     }
+}
+
+closeOverlayBtn?.addEventListener('click', () => {
+    successOverlay.classList.add('hidden');
 });
 
 if (toggleBtn) {
@@ -33,13 +41,12 @@ if (toggleBtn) {
         if (toggleIcon) {
             toggleIcon.src = isPassword ? 'assets/images/view.png' : 'assets/images/hide.png';
         }
-        toggleBtn.classList.toggle('active', isPassword);
+        toggleBtn.classList.toggle('active');
     });
 }
 
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
-
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
     const submitBtn = loginForm.querySelector('.btn-primary');
@@ -47,74 +54,67 @@ loginForm.addEventListener('submit', (event) => {
     limparFeedback();
 
     if (tentativasRestantes <= 0) {
-        mostrarFeedback("Acesso bloqueado. Verifique seu e-mail para desbloqueio.", "error");
+        abrirModal("Acesso Bloqueado", "Sua conta permanece suspensa.\nVerifique seu e-mail para instruções.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
         return;
     }
 
     if (!username || !password) {
-        mostrarFeedback("Por favor, preencha as credenciais de acesso.", "error");
+        mostrarFeedback("Por favor, preencha as credenciais.", "error");
         return;
     }
 
-    if (username === USUARIO_VALIDO.username && password === USUARIO_VALIDO.password) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Verificando...";
+    submitBtn.disabled = true;
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Verificando...";
 
-        if (rememberCheckbox && rememberCheckbox.checked) {
-            localStorage.setItem('rememberedUser', username);
-        } else {
-            localStorage.removeItem('rememberedUser');
+    setTimeout(() => {
+        if (username !== USUARIO_VALIDO.username) {
+            mostrarFeedback("Usuário não encontrado.", "error");
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            return;
         }
 
-        setTimeout(() => {
-            if (successOverlay) {
-                successOverlay.classList.remove('hidden');
-                const successStatus = document.getElementById('successStatus');
-                setTimeout(() => {
-                    if (statusVisual) {
-                        statusVisual.innerHTML = `<img src="assets/images/avatar-logged.jpg" alt="User">`;
-                    }
-                    if (welcomeTitle) welcomeTitle.textContent = "Bem-vindo, Cat-Dev!";
-                    if (successStatus) successStatus.textContent = "Redirecionando...";
-                }, 1500);
+        if (password === USUARIO_VALIDO.password) {
+            abrirModal("Usuário encontrado!", "Validando suas credenciais...", `<div class="check-icon"></div>`, false);
+
+            setTimeout(() => {
+                welcomeTitle.textContent = "Login realizado!";
+                successStatus.textContent = "Bem-vindo de volta, Cat-Dev!\nRedirecionando...";
+                statusVisual.innerHTML = `<img src="assets/images/avatar-logged.jpg" alt="User" style="width:100px;height:100px;border-radius:50%;object-fit:cover;animation:fadeIn 0.5s ease;">`;
+            }, 1500);
+
+            loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
+        } else {
+            tentativasRestantes--;
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+
+            if (tentativasRestantes > 0) {
+                mostrarFeedback(`Senha incorreta. Restam ${tentativasRestantes} tentativa(s).`, "error");
+                passwordInput.value = '';
+                passwordInput.focus();
+            } else {
+                abrirModal("Acesso temporariamente bloqueado", "Detectamos várias tentativas incorretas de acesso.\nPor segurança, sua conta foi bloqueada temporariamente.\nVerifique seu e-mail para mais informações ou entre em contato com o suporte.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
+                loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
+                submitBtn.style.opacity = "0.5";
+                submitBtn.textContent = "Bloqueado";
             }
-            loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
-        }, 1500);
-
-    } else {
-        tentativasRestantes--;
-
-        if (tentativasRestantes > 0) {
-            mostrarFeedback(`Identificação inválida. Restam ${tentativasRestantes} tentativa(s).`, "error");
-            passwordInput.value = '';
-            passwordInput.focus();
-        } else {
-            mostrarFeedback("Acesso bloqueado por segurança. Verifique seu e-mail. (Reinicie a página)", "error");
-            loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
-            submitBtn.style.opacity = "0.5";
-            submitBtn.textContent = "Conta Bloqueada";
         }
-    }
+    }, 1500);
 });
 
 if (forgotPasswordBtn) {
     forgotPasswordBtn.addEventListener('click', () => {
-        const mensagemAjuda = "Contate o suporte de TI\n(admin / 123)";
-        const estaVisivel = !feedbackMessage.classList.contains('hidden');
-        const mesmaMensagem = feedbackMessage.textContent === mensagemAjuda;
-
-        if (estaVisivel && mesmaMensagem) {
-            limparFeedback();
-        } else {
-            mostrarFeedback(mensagemAjuda, "success");
-        }
+        const msgHelp = "Verifique o e-mail corporativo para instruções de recuperação.\n\nEm caso de dúvidas, entre em contato com o suporte:\nsuporte@dev.com";
+        abrirModal("Precisa de ajuda?", msgHelp, `<img src="assets/images/support.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
     });
 }
 
 function mostrarFeedback(mensagem, tipo) {
     feedbackMessage.textContent = mensagem;
     feedbackMessage.classList.remove('hidden', 'error', 'success', 'error-shake');
-    void feedbackMessage.offsetWidth;
+    void feedbackMessage.offsetWidth; 
     feedbackMessage.classList.add(tipo);
     if (tipo === 'error') feedbackMessage.classList.add('error-shake');
 }
