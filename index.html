@@ -60,20 +60,43 @@
 
     <div id="successOverlay" class="overlay hidden">
         <div class="success-card">
-            <div id="statusVisual" class="status-visual"></div>
-            <h2 id="welcomeTitle">Título</h2>
+            <button type="button" id="closeX" class="close-x">&times;</button>
             
+            <div id="statusVisual" class="status-visual"></div>
+            <h2 id="welcomeTitle"></h2>
             <p id="successStatus"></p>
 
             <div id="recoveryContainer" class="hidden">
                 <p>Para recuperar sua senha, digite seu e-mail:</p>
-                <input type="email" id="recoveryEmail" placeholder="ex: admin@dev.com">
+                <input type="email" id="recoveryEmail" placeholder="admin@dev.com">
                 <button type="button" id="confirmRecovery" class="btn-primary">Enviar Link</button>
             </div>
 
-            <button type="button" id="closeOverlay" class="btn-primary hidden">Entendido</button>
+            <button id="closeOverlay" class="btn-primary hidden">Entendido</button>
         </div>
     </div>
+
+    <footer class="main-footer">
+        <div class="footer-content container">
+            <p class="footer-copy">Desenvolvido e codificado por Francisco</p>
+
+            <div class="footer-center">
+                © 2026 • Francisco Neto
+            </div>
+
+            <div class="social-links">
+                <a href="https://github.com/Francisco-Neto13" target="_blank">
+                    <img src="assets/images/github.png" alt="GitHub">
+                </a>
+                <a href="https://www.instagram.com/cisscoo_" target="_blank">
+                    <img src="assets/images/instagram.png" alt="Instagram">
+                </a>
+                <a href="https://www.linkedin.com/" target="_blank">
+                    <img src="assets/images/linkedin.png" alt="LinkedIn">
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script src="/js/login.js"></script>
     

@@ -163,11 +163,29 @@
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.08),
         0 2px 8px rgba(0, 0, 0, 0.05);
-
     text-align: center;
     transform: translateX(29px);
     animation: popIn 0.4s ease forwards;
+    position: relative;
 
+}
+
+.close-x {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.close-x:hover {
+    color: #333;
 }
 
 .check-icon {

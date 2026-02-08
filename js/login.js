@@ -18,11 +18,12 @@ const welcomeTitle = document.getElementById('welcomeTitle');
 const successStatus = document.getElementById('successStatus');
 const statusVisual = document.getElementById('statusVisual');
 const closeOverlayBtn = document.getElementById('closeOverlay');
+const closeXBtn = document.getElementById('closeX');
 const recoveryContainer = document.getElementById('recoveryContainer');
 const recoveryEmailInput = document.getElementById('recoveryEmail');
 const confirmRecoveryBtn = document.getElementById('confirmRecovery');
 
-function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modoRecuperacao = false, textoBotao = "Entendido") {
+function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modoRecuperacao = false, textoBotao = "Entendido", mostrarX = true) {
     welcomeTitle.textContent = titulo;
     successStatus.textContent = mensagem;
     statusVisual.innerHTML = conteudoVisual;
@@ -37,6 +38,8 @@ function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modo
 
     successOverlay.classList.remove('hidden');
     
+    closeXBtn.classList.toggle('hidden', !mostrarX);
+
     if (mostrarBotao) {
         closeOverlayBtn.classList.remove('hidden');
         closeOverlayBtn.textContent = textoBotao;
@@ -45,8 +48,14 @@ function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modo
     }
 }
 
-closeOverlayBtn?.addEventListener('click', () => {
-    successOverlay.classList.add('hidden');
+[closeOverlayBtn, closeXBtn].forEach(btn => {
+    btn?.addEventListener('click', () => {
+        if (closeOverlayBtn.textContent === "Tente novamente" && btn === closeOverlayBtn) {
+            forgotPasswordBtn.click();
+        } else {
+            successOverlay.classList.add('hidden');
+        }
+    });
 });
 
 if (toggleBtn) {
@@ -88,7 +97,7 @@ loginForm.addEventListener('submit', (event) => {
         }
 
         if (password === USUARIO_VALIDO.password) {
-            abrirModal("Usuário encontrado!", "Validando suas credenciais...", `<div class="check-icon"></div>`, false);
+            abrirModal("Usuário encontrado!", "Validando suas credenciais...", `<div class="check-icon"></div>`, false, false, "Entendido", false);
 
             setTimeout(() => {
                 welcomeTitle.textContent = "Login realizado!";
@@ -107,7 +116,7 @@ loginForm.addEventListener('submit', (event) => {
                 passwordInput.value = '';
                 passwordInput.focus();
             } else {
-                abrirModal("Acesso temporariamente bloqueado", "Detectamos várias tentativas incorretas de acesso.\nPor segurança, sua conta foi bloqueada temporariamente.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
+                abrirModal("Acesso bloqueado", "Sua conta foi bloqueada temporariamente.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Entendido", false);
                 loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
                 submitBtn.style.opacity = "0.5";
                 submitBtn.textContent = "Bloqueado";
@@ -136,16 +145,13 @@ confirmRecoveryBtn?.addEventListener('click', () => {
     }
 
     confirmRecoveryBtn.disabled = true;
-    const originalBtnText = confirmRecoveryBtn.textContent;
     confirmRecoveryBtn.textContent = "Verificando...";
 
     setTimeout(() => {
         if (emailDigitado.toLowerCase() === USUARIO_VALIDO.email.toLowerCase()) {
-            abrirModal("E-mail identificado!", `Instruções enviadas para:\n${USUARIO_VALIDO.email}`, `<div class="check-icon"></div>`, true, false, "Entendido");
+            abrirModal("E-mail identificado!", `Instruções enviadas para:\n${USUARIO_VALIDO.email}`, `<div class="check-icon"></div>`, true, false, "Entendido", true);
         } else {
-            abrirModal("E-mail não encontrado", "O e-mail informado não consta em nossa base de dados.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Tente novamente");
-            confirmRecoveryBtn.disabled = false;
-            confirmRecoveryBtn.textContent = originalBtnText;
+            abrirModal("E-mail não encontrado", "O e-mail informado não consta em nossa base de dados.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Tente novamente", true);
         }
     }, 1500);
 });
