@@ -1,5 +1,6 @@
 const USUARIO_VALIDO = {
     username: "admin",
+    email: "admin@dev.com",
     password: "123"
 };
 
@@ -17,14 +18,28 @@ const welcomeTitle = document.getElementById('welcomeTitle');
 const successStatus = document.getElementById('successStatus');
 const statusVisual = document.getElementById('statusVisual');
 const closeOverlayBtn = document.getElementById('closeOverlay');
+const recoveryContainer = document.getElementById('recoveryContainer');
+const recoveryEmailInput = document.getElementById('recoveryEmail');
+const confirmRecoveryBtn = document.getElementById('confirmRecovery');
 
-function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false) {
+function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modoRecuperacao = false, textoBotao = "Entendido") {
     welcomeTitle.textContent = titulo;
     successStatus.textContent = mensagem;
     statusVisual.innerHTML = conteudoVisual;
+
+    if (modoRecuperacao) {
+        successStatus.classList.add('hidden');
+        recoveryContainer.classList.remove('hidden');
+    } else {
+        successStatus.classList.remove('hidden');
+        recoveryContainer.classList.add('hidden');
+    }
+
     successOverlay.classList.remove('hidden');
+    
     if (mostrarBotao) {
         closeOverlayBtn.classList.remove('hidden');
+        closeOverlayBtn.textContent = textoBotao;
     } else {
         closeOverlayBtn.classList.add('hidden');
     }
@@ -47,18 +62,13 @@ if (toggleBtn) {
 
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const username = usernameInput.value.trim();
+    const loginValue = usernameInput.value.trim();
     const password = passwordInput.value.trim();
     const submitBtn = loginForm.querySelector('.btn-primary');
 
     limparFeedback();
 
-    if (tentativasRestantes <= 0) {
-        abrirModal("Acesso Bloqueado", "Sua conta permanece suspensa.\nVerifique seu e-mail para instruções.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
-        return;
-    }
-
-    if (!username || !password) {
+    if (!loginValue || !password) {
         mostrarFeedback("Por favor, preencha as credenciais.", "error");
         return;
     }
@@ -68,8 +78,10 @@ loginForm.addEventListener('submit', (event) => {
     submitBtn.textContent = "Verificando...";
 
     setTimeout(() => {
-        if (username !== USUARIO_VALIDO.username) {
-            mostrarFeedback("Usuário não encontrado.", "error");
+        const usuarioExiste = (loginValue === USUARIO_VALIDO.username || loginValue === USUARIO_VALIDO.email);
+
+        if (!usuarioExiste) {
+            mostrarFeedback("Identificação não encontrada.", "error");
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
             return;
@@ -95,7 +107,7 @@ loginForm.addEventListener('submit', (event) => {
                 passwordInput.value = '';
                 passwordInput.focus();
             } else {
-                abrirModal("Acesso temporariamente bloqueado", "Detectamos várias tentativas incorretas de acesso.\nPor segurança, sua conta foi bloqueada temporariamente.\nVerifique seu e-mail para mais informações ou entre em contato com o suporte.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
+                abrirModal("Acesso temporariamente bloqueado", "Detectamos várias tentativas incorretas de acesso.\nPor segurança, sua conta foi bloqueada temporariamente.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
                 loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
                 submitBtn.style.opacity = "0.5";
                 submitBtn.textContent = "Bloqueado";
@@ -106,10 +118,37 @@ loginForm.addEventListener('submit', (event) => {
 
 if (forgotPasswordBtn) {
     forgotPasswordBtn.addEventListener('click', () => {
-        const msgHelp = "Verifique o e-mail corporativo para instruções de recuperação.\n\nEm caso de dúvidas, entre em contato com o suporte:\nsuporte@dev.com";
-        abrirModal("Precisa de ajuda?", msgHelp, `<img src="assets/images/support.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true);
+        recoveryEmailInput.value = '';
+        recoveryEmailInput.style.borderColor = "#ddd";
+        confirmRecoveryBtn.disabled = false;
+        confirmRecoveryBtn.textContent = "Enviar Link";
+        abrirModal("Recuperação de Senha", "", `<img src="assets/images/support.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, false, true);
     });
 }
+
+confirmRecoveryBtn?.addEventListener('click', () => {
+    const emailDigitado = recoveryEmailInput.value.trim();
+
+    if (emailDigitado === "") {
+        recoveryEmailInput.style.borderColor = "red";
+        recoveryEmailInput.focus();
+        return;
+    }
+
+    confirmRecoveryBtn.disabled = true;
+    const originalBtnText = confirmRecoveryBtn.textContent;
+    confirmRecoveryBtn.textContent = "Verificando...";
+
+    setTimeout(() => {
+        if (emailDigitado.toLowerCase() === USUARIO_VALIDO.email.toLowerCase()) {
+            abrirModal("E-mail identificado!", `Instruções enviadas para:\n${USUARIO_VALIDO.email}`, `<div class="check-icon"></div>`, true, false, "Entendido");
+        } else {
+            abrirModal("E-mail não encontrado", "O e-mail informado não consta em nossa base de dados.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Tente novamente");
+            confirmRecoveryBtn.disabled = false;
+            confirmRecoveryBtn.textContent = originalBtnText;
+        }
+    }, 1500);
+});
 
 function mostrarFeedback(mensagem, tipo) {
     feedbackMessage.textContent = mensagem;
