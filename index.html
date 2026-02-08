@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso ao Sistema</title>
+    <title>Portal do Colaborador</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -12,11 +12,11 @@
         <section class="login-box">
 
             <div class="login-avatar">
-                <img src="assets/images/avatar.png" alt="ícone de login">
+                <img id="userAvatar" src="assets/images/avatar.png" alt="ícone de login">
             </div>
 
             <header>
-                <h1>Acesso ao Sistema</h1>
+                <h1>Acesso ao Portal</h1>
                 <p>Insira suas credenciais para continuar</p>
             </header>
 
@@ -54,6 +54,15 @@
             </form>
         </section>
     </main>
+
+    <div id="successOverlay" class="overlay hidden">
+        <div class="success-card">
+            <div id="statusVisual" class="status-visual">
+                <div class="check-icon"></div> </div>
+            <h2 id="welcomeTitle">Login realizado!</h2>
+            <p id="successStatus">Aguarde, estamos preparando seu painel.</p>
+        </div>
+    </div>
 
     <script src="/js/login.js"></script>
     
