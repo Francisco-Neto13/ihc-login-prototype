@@ -129,7 +129,7 @@ loginForm?.addEventListener('submit', (event) => {
                 passwordInput.value = '';
                 passwordInput.focus();
             } else {
-                abrirModal("Acesso bloqueado", "Sua conta foi bloqueada temporariamente.", `<div class="check-icon warning"></div>`, true, false, "Entendido", false);
+                abrirModal("Acesso bloqueado", "Sua conta foi bloqueada temporariamente. Verifique seu e-mail para mais informações", `<div class="check-icon warning"></div>`, true, false, "Entendido", false);
                 loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
                 submitBtn.style.opacity = "0.5";
                 submitBtn.textContent = "Bloqueado";
