@@ -13,6 +13,7 @@ const feedbackMessage = document.getElementById('feedbackMessage');
 const toggleBtn = document.querySelector('.toggle-password');
 const toggleIcon = toggleBtn?.querySelector('img');
 const forgotPasswordBtn = document.getElementById('forgotPassword');
+
 const successOverlay = document.getElementById('successOverlay');
 const welcomeTitle = document.getElementById('welcomeTitle');
 const successStatus = document.getElementById('successStatus');
@@ -23,38 +24,52 @@ const recoveryContainer = document.getElementById('recoveryContainer');
 const recoveryEmailInput = document.getElementById('recoveryEmail');
 const confirmRecoveryBtn = document.getElementById('confirmRecovery');
 
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const body = document.body;
+
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+    if (themeIcon) themeIcon.src = 'assets/images/sun.png';
+}
+
+themeToggle?.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const isDark = body.classList.contains('dark-mode');
+    if (themeIcon) themeIcon.src = isDark ? 'assets/images/sun.png' : 'assets/images/moon.png';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+
 function abrirModal(titulo, mensagem, conteudoVisual, mostrarBotao = false, modoRecuperacao = false, textoBotao = "Entendido", mostrarX = true) {
     welcomeTitle.textContent = titulo;
-    successStatus.textContent = mensagem;
+    successStatus.innerHTML = mensagem.replace(/\n/g, "<br>");
     statusVisual.innerHTML = conteudoVisual;
+
+    successStatus.classList.remove('hidden');
+    recoveryContainer.classList.add('hidden');
+    closeOverlayBtn.classList.add('hidden');
 
     if (modoRecuperacao) {
         successStatus.classList.add('hidden');
         recoveryContainer.classList.remove('hidden');
-    } else {
-        successStatus.classList.remove('hidden');
-        recoveryContainer.classList.add('hidden');
     }
-
-    successOverlay.classList.remove('hidden');
-    
-    closeXBtn.classList.toggle('hidden', !mostrarX);
 
     if (mostrarBotao) {
         closeOverlayBtn.classList.remove('hidden');
         closeOverlayBtn.textContent = textoBotao;
-    } else {
-        closeOverlayBtn.classList.add('hidden');
     }
+
+    closeXBtn.classList.toggle('hidden', !mostrarX);
+    successOverlay.classList.remove('hidden');
 }
 
 [closeOverlayBtn, closeXBtn].forEach(btn => {
     btn?.addEventListener('click', () => {
-        if (closeOverlayBtn.textContent === "Tente novamente" && btn === closeOverlayBtn) {
-            forgotPasswordBtn.click();
-        } else {
-            successOverlay.classList.add('hidden');
-        }
+        successOverlay.classList.add('hidden');
+        statusVisual.innerHTML = '';
+        successStatus.textContent = '';
+        recoveryContainer.classList.add('hidden');
+        successStatus.classList.remove('hidden');
     });
 });
 
@@ -62,14 +77,12 @@ if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
         const isPassword = passwordInput.type === 'password';
         passwordInput.type = isPassword ? 'text' : 'password';
-        if (toggleIcon) {
-            toggleIcon.src = isPassword ? 'assets/images/view.png' : 'assets/images/hide.png';
-        }
+        if (toggleIcon) toggleIcon.src = isPassword ? 'assets/images/view.png' : 'assets/images/hide.png';
         toggleBtn.classList.toggle('active');
     });
 }
 
-loginForm.addEventListener('submit', (event) => {
+loginForm?.addEventListener('submit', (event) => {
     event.preventDefault();
     const loginValue = usernameInput.value.trim();
     const password = passwordInput.value.trim();
@@ -87,7 +100,7 @@ loginForm.addEventListener('submit', (event) => {
     submitBtn.textContent = "Verificando...";
 
     setTimeout(() => {
-        const usuarioExiste = (loginValue === USUARIO_VALIDO.username || loginValue === USUARIO_VALIDO.email);
+        const usuarioExiste = loginValue === USUARIO_VALIDO.username || loginValue === USUARIO_VALIDO.email;
 
         if (!usuarioExiste) {
             mostrarFeedback("Identificação não encontrada.", "error");
@@ -101,8 +114,8 @@ loginForm.addEventListener('submit', (event) => {
 
             setTimeout(() => {
                 welcomeTitle.textContent = "Login realizado!";
-                successStatus.textContent = "Bem-vindo de volta, Cat-Dev!\nRedirecionando...";
-                statusVisual.innerHTML = `<img src="assets/images/avatar-logged.jpg" alt="User" style="width:100px;height:100px;border-radius:50%;object-fit:cover;animation:fadeIn 0.5s ease;">`;
+                successStatus.innerHTML = "Bem-vindo de volta, Cat-Dev!<br>Redirecionando...";
+                statusVisual.innerHTML = `<img src="assets/images/avatar-logged.jpg" alt="User" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">`;
             }, 1500);
 
             loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
@@ -116,7 +129,7 @@ loginForm.addEventListener('submit', (event) => {
                 passwordInput.value = '';
                 passwordInput.focus();
             } else {
-                abrirModal("Acesso bloqueado", "Sua conta foi bloqueada temporariamente.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Entendido", false);
+                abrirModal("Acesso bloqueado", "Sua conta foi bloqueada temporariamente.", `<div class="check-icon warning"></div>`, true, false, "Entendido", false);
                 loginForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
                 submitBtn.style.opacity = "0.5";
                 submitBtn.textContent = "Bloqueado";
@@ -125,21 +138,19 @@ loginForm.addEventListener('submit', (event) => {
     }, 1500);
 });
 
-if (forgotPasswordBtn) {
-    forgotPasswordBtn.addEventListener('click', () => {
-        recoveryEmailInput.value = '';
-        recoveryEmailInput.style.borderColor = "#ddd";
-        confirmRecoveryBtn.disabled = false;
-        confirmRecoveryBtn.textContent = "Enviar Link";
-        abrirModal("Recuperação de Senha", "", `<img src="assets/images/support.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, false, true);
-    });
-}
+forgotPasswordBtn?.addEventListener('click', () => {
+    recoveryEmailInput.value = '';
+    recoveryEmailInput.style.borderColor = "var(--border)";
+    confirmRecoveryBtn.disabled = false;
+    confirmRecoveryBtn.textContent = "Enviar Link";
+    abrirModal("Recuperação de Senha", "", `<img src="assets/images/support.png" style="width:80px;height:80px;border-radius:50%;">`, false, true);
+});
 
 confirmRecoveryBtn?.addEventListener('click', () => {
     const emailDigitado = recoveryEmailInput.value.trim();
 
-    if (emailDigitado === "") {
-        recoveryEmailInput.style.borderColor = "red";
+    if (!emailDigitado) {
+        recoveryEmailInput.style.borderColor = "var(--error)";
         recoveryEmailInput.focus();
         return;
     }
@@ -149,9 +160,9 @@ confirmRecoveryBtn?.addEventListener('click', () => {
 
     setTimeout(() => {
         if (emailDigitado.toLowerCase() === USUARIO_VALIDO.email.toLowerCase()) {
-            abrirModal("E-mail identificado!", `Instruções enviadas para:\n${USUARIO_VALIDO.email}`, `<div class="check-icon"></div>`, true, false, "Entendido", true);
+            abrirModal("E-mail identificado!", `Instruções enviadas para:<br>${USUARIO_VALIDO.email}`, `<div class="check-icon"></div>`, true, false, "Entendido", true);
         } else {
-            abrirModal("E-mail não encontrado", "O e-mail informado não consta em nossa base de dados.", `<img src="assets/images/lock-error.png" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">`, true, false, "Tente novamente", true);
+            abrirModal("E-mail não encontrado", "O e-mail informado não consta em nossa base de dados.", `<div class="check-icon error"></div>`, true, false, "Tente novamente", true);
         }
     }, 1500);
 });
@@ -159,7 +170,7 @@ confirmRecoveryBtn?.addEventListener('click', () => {
 function mostrarFeedback(mensagem, tipo) {
     feedbackMessage.textContent = mensagem;
     feedbackMessage.classList.remove('hidden', 'error', 'success', 'error-shake');
-    void feedbackMessage.offsetWidth; 
+    void feedbackMessage.offsetWidth;
     feedbackMessage.classList.add(tipo);
     if (tipo === 'error') feedbackMessage.classList.add('error-shake');
 }

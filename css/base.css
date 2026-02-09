@@ -2,20 +2,34 @@
     --bg-color: #f4f4f4;
     --card-bg: #ffffff;
     --text-main: #333333;
+    --text-secondary: #666666; 
     --accent: #000000;
     --border: #dddddd;
     --error: #d32f2f;
     --success: #2e7d32;
+    --footer-bg: rgba(255, 255, 255, 0.5); 
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-main: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent: #ffffff;
+    --border: #333333;
+    --footer-bg: rgba(0, 0, 0, 0.3);
 }
 
 body {
     background-color: var(--bg-color);
+    color: var(--text-main);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     display: flex;
     flex-direction: column; 
     min-height: 100vh; 
     margin: 0;
-    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
 }
 
 main {
@@ -28,4 +42,17 @@ main {
 
 .hidden {
     display: none !important;
+}
+
+body.dark-mode .login-avatar img,
+body.dark-mode .security-note img,
+body.dark-mode .btn-theme img,
+body.dark-mode .input-icon > img,
+body.dark-mode .toggle-password img {
+    filter: brightness(0) invert(1);
+    opacity: 0.8; 
+}
+
+body.dark-mode .social-links img {
+    filter: grayscale(100%) brightness(0) invert(1);
 }

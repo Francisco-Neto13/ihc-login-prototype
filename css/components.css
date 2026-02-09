@@ -11,19 +11,23 @@
     width: 18px;
     height: 18px;
     opacity: 0.6;
-    pointer-events: none; 
+    pointer-events: none;
     transition: opacity 0.2s ease;
     z-index: 2;
 }
 
 .input-icon input {
     width: 100%;
-    padding: 12px 44px; 
+    padding: 12px 44px;
     border: 1px solid var(--border);
     border-radius: 8px;
     box-sizing: border-box;
     font-size: 0.95rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s;
 }
 
 .input-icon input:focus {
@@ -38,10 +42,10 @@
 
 .toggle-password {
     position: absolute;
-    right: 10px; 
+    right: 10px;
     background: none;
     border: none;
-    padding: 8px; 
+    padding: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -55,16 +59,16 @@
 }
 
 .toggle-password img {
-    position: static;
     width: 18px;
     height: 18px;
     opacity: 0.6;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 .toggle-password:hover img,
 .toggle-password.active img {
     opacity: 1;
+    transform: scale(1.08);
 }
 
 .btn-primary {
@@ -72,13 +76,15 @@
     padding: 12px;
     margin-top: 0.5rem;
     background: var(--accent);
-    color: white;
+    color: var(--card-bg);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     font-size: 0.95rem;
-    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s;
+    transition: transform 0.12s ease,
+                box-shadow 0.12s ease,
+                opacity 0.2s;
 }
 
 .btn-primary:hover {
@@ -87,14 +93,14 @@
 }
 
 .btn-primary:active {
-    transform: scale(0.97); 
+    transform: scale(0.97);
     box-shadow: 0 2px 6px rgba(0,0,0,0.2) inset;
 }
 
 .btn-text {
     background: none;
     border: none;
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     cursor: pointer;
     text-decoration: none;
@@ -114,60 +120,68 @@
     border-radius: 8px;
     font-size: 0.9rem;
     text-align: center;
+    border: 1px solid transparent;
 }
 
-#feedbackMessage, #successStatus {
+#feedbackMessage,
+#successStatus {
     white-space: pre-line;
 }
 
 .error {
-    background: #ffebee;
+    background: rgba(211, 47, 47, 0.1);
     color: var(--error);
-    border: 1px solid var(--error);
+    border-color: var(--error);
 }
 
 .success {
-    background: #e8f5e9;
+    background: rgba(46, 125, 50, 0.1);
     color: var(--success);
-    border: 1px solid var(--success);
-}
-
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    border-color: var(--success);
 }
 
 .overlay {
     position: fixed;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.success-card {
-    background: var(--card-bg);
-    padding: 2.5rem 2rem; 
-    border-radius: 12px; 
-    width: 100%;          
-    max-width: 400px;    
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.08),
-        0 2px 8px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    transform: translateX(29px);
-    animation: popIn 0.4s ease forwards;
-    position: relative;
+body:not(.dark-mode) .overlay {
+    background: rgba(255, 255, 255, 0.4);
+}
 
+.auth-card {
+    background: var(--card-bg);
+    color: var(--text-main);
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.login-box.auth-card {
+    max-width: 400px;
+}
+
+.overlay .auth-card {
+    max-width: 460px;
+}
+
+.auth-card form {
+    width: 100%;
+    text-align: left;
 }
 
 .close-x {
@@ -177,19 +191,19 @@
     background: none;
     border: none;
     font-size: 24px;
-    font-weight: bold;
-    color: #999;
+    font-weight: 900;
+    color: var(--text-secondary);
     cursor: pointer;
     line-height: 1;
     transition: color 0.2s;
 }
 
 .close-x:hover {
-    color: #333;
+    color: var(--accent);
 }
 
 .check-icon {
-    width: 64px;         
+    width: 64px;
     height: 64px;
     background: var(--success);
     color: white;
@@ -197,37 +211,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;  
-    font-size: 2rem;
+    margin: 0 auto 1rem;
+    font-size: 2.6rem;
+    font-weight: 900;
     animation: checkAppear 0.5s ease 0.2s both;
 }
 
 .check-icon::after {
     content: '✓';
-    line-height: 0;
+    line-height: 1;
 }
 
-.error-shake {
-    animation: shake 0.4s ease-in-out;
+.check-icon.warning,
+.check-icon.error {
+    background: var(--error);
 }
 
-#recoveryContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+.check-icon.warning::after {
+    content: '✕';
 }
 
-#recoveryContainer p {
-    margin-bottom: 5px; 
+.check-icon.error::after {
+    content: '!';
 }
 
 #recoveryEmail {
-    width: 93%;
+    width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-main);
     text-align: center;
     outline: none;
+    box-sizing: border-box;
 }

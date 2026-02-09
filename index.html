@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal do Desenvolvedor</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
 </head>
 <body>
 
-    <main class="login-container">
-        <section class="login-box">
+    <div class="theme-switch-wrapper">
+        <button type="button" id="themeToggle" class="btn-theme" title="Alternar modo claro/escuro">
+            <img id="themeIcon" src="assets/images/moon.png" alt="Modo Escuro" width="20">
+        </button>
+    </div>
 
+    <main>
+        <section class="login-box auth-card">
             <div class="login-avatar">
                 <img id="userAvatar" src="assets/images/avatar.png" alt="ícone de login">
             </div>
@@ -21,7 +27,6 @@
             </header>
 
             <form id="loginForm" novalidate>
-
                 <div class="form-group">
                     <div class="input-icon">
                         <img src="assets/images/user.png" alt="">
@@ -30,10 +35,9 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="input-icon input-password">
+                    <div class="input-icon">
                         <img src="assets/images/lock.png" alt="">
                         <input type="password" id="password" placeholder="Digite sua senha" required>
-
                         <button type="button" class="toggle-password" aria-label="Mostrar senha">
                             <img src="assets/images/hide.png" alt="">
                         </button>
@@ -47,43 +51,34 @@
                 <div id="feedbackMessage" class="feedback hidden" aria-live="polite"></div>
 
                 <button type="submit" class="btn-primary">Entrar</button>
-
             </form>
 
-               <p class="security-note">
-                    <img src="assets/images/verified.png" alt="Cadeado" width="18"> 
-                    Credenciais tratadas com segurança
-               </p>
-
+            <p class="security-note">
+                <img src="assets/images/verified.png" alt="Cadeado" width="18">
+                Credenciais tratadas com segurança
+            </p>
         </section>
     </main>
 
     <div id="successOverlay" class="overlay hidden">
-        <div class="success-card">
+        <div class="success-card auth-card">
             <button type="button" id="closeX" class="close-x">&times;</button>
-            
-            <div id="statusVisual" class="status-visual"></div>
+            <div id="statusVisual"></div>
             <h2 id="welcomeTitle"></h2>
             <p id="successStatus"></p>
-
             <div id="recoveryContainer" class="hidden">
                 <p>Para recuperar sua senha, digite seu e-mail:</p>
                 <input type="email" id="recoveryEmail" placeholder="admin@dev.com">
                 <button type="button" id="confirmRecovery" class="btn-primary">Enviar Link</button>
             </div>
-
             <button id="closeOverlay" class="btn-primary hidden">Entendido</button>
         </div>
     </div>
 
     <footer class="main-footer">
-        <div class="footer-content container">
+        <div class="footer-content">
             <p class="footer-copy">Desenvolvido e codificado por Francisco</p>
-
-            <div class="footer-center">
-                © 2026 • Francisco Neto
-            </div>
-
+            <div class="footer-center">© 2026 • Francisco Neto</div>
             <div class="social-links">
                 <a href="https://github.com/Francisco-Neto13" target="_blank">
                     <img src="assets/images/github.png" alt="GitHub">
@@ -99,6 +94,6 @@
     </footer>
 
     <script src="js/login.js"></script>
-    
+
 </body>
 </html>
