@@ -28,6 +28,11 @@ const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
 const body = document.body;
 
+const yearDisplay = document.getElementById('currentYear');
+if (yearDisplay) {
+    yearDisplay.textContent = new Date().getFullYear();
+}
+
 if (localStorage.getItem('theme') === 'dark') {
     body.classList.add('dark-mode');
     if (themeIcon) themeIcon.src = 'assets/images/sun.png';

@@ -44,7 +44,6 @@ main {
     display: none !important;
 }
 
-body.dark-mode .login-avatar img,
 body.dark-mode .security-note img,
 body.dark-mode .btn-theme img,
 body.dark-mode .input-icon > img,
@@ -53,6 +52,17 @@ body.dark-mode .toggle-password img {
     opacity: 0.8; 
 }
 
+body.dark-mode .login-avatar img {
+    filter: none !important;
+    background-color: #ffffff !important;
+    opacity: 1;
+}
+
 body.dark-mode .social-links img {
     filter: grayscale(100%) brightness(0) invert(1);
+}
+
+body.dark-mode .social-links a:hover img {
+    filter: grayscale(0%) brightness(0) invert(1) !important;
+    opacity: 1;
 }
