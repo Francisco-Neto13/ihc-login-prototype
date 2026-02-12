@@ -118,7 +118,7 @@ loginForm?.addEventListener('submit', (event) => {
             abrirModal("Usuário encontrado!", "Validando suas credenciais...", `<div class="check-icon"></div>`, false, false, "Entendido", false);
 
             setTimeout(() => {
-                welcomeTitle.textContent = "Login realizado!";
+                welcomeTitle.textContent = "Login realizado com sucesso!";
                 successStatus.innerHTML = "Bem-vindo de volta, Cat-Dev!<br>Redirecionando...";
                 statusVisual.innerHTML = `<img src="assets/images/avatar-logged.jpg" alt="User" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">`;
             }, 1500);
